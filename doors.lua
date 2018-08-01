@@ -8,9 +8,9 @@ local image = require("image")
 local GUI = require("GUI")
 local redstone = require('component').redstone
 local event = require('event')
-local modem = require('compenent').modem
+local modem = require('component').modem
 local ser = require('serialization')
-local server_address = 'd3e6ffb5-3964-4097-e8b7-19631d3be954'
+local server_address = 'd3e6ffb5-3964-4097-a8b7-19631d3be954'
 
 local isOpen = false
 ------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ end
 ------------------------------------------------------------------------------------------
 modem.open(1)
 
-event.listen('modem_message', function(_, sender, _, _, msg)
+event.listen('modem_message', function(e, _, sender, _, _, msg)
     if sender == server_address then
         -- deconstruct the message
         local _msg = ser.unserialize(msg)

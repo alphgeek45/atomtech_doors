@@ -10,7 +10,7 @@ mainContainer:addChild(GUI.panel(1, 1, mainContainer.width, mainContainer.height
 local layout = mainContainer:addChild(GUI.layout(1, 1, mainContainer.width, mainContainer.height, 3, 1))
 
 -- Create vertically oriented list
-local playerList = layout:setPosition(1, 1, layout:addChild(GUI.list(3, 2, 25, 30, 3, 0, 0xE1E1E1, 0x4B4B4B, 0xD2D2D2, 0x4B4B4B, 0x3366CC, 0xFFFFFF, false)))
+local playerList = layout:setPosition(1, 1, layout:addChild(GUI.list(3, 2, 25, 25, 3, 0, 0xE1E1E1, 0x4B4B4B, 0xD2D2D2, 0x4B4B4B, 0x3366CC, 0xFFFFFF, false)))
 local addButton = layout:setPosition(3, 1, layout:addChild(GUI.button(1, 1, 26, 3, 0xEEEEEE, 0x000000, 0xAAAAAA, 0x0, "+Add")))
 local playerText = layout:setPosition(2, 1, layout:addChild(GUI.input(2, 2, 30, 3, 0xEEEEEE, 0x555555, 0x999999, 0xFFFFFF, 0x2D2D2D, "", "Placeholder text")))
 
@@ -32,7 +32,8 @@ end
 
 modem.open(1)
 
-event.listen('modem_message', function(_, sender, _, _, msg)
+event.listen('modem_message', function(_, _, sender, _, _, msg)
+    
     local _cmd = ser.unserialize(msg)
     local returned = {}
     if _cmd.command == "request" then
