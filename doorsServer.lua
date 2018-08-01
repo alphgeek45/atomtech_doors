@@ -33,7 +33,6 @@ end
 modem.open(1)
 
 event.listen('modem_message', function(_, _, sender, _, _, msg)
-    
     local _cmd = ser.unserialize(msg)
     local returned = {}
     if _cmd.command == "request" then
@@ -42,6 +41,8 @@ event.listen('modem_message', function(_, _, sender, _, _, msg)
         else
             returned = {command="deny"}
         end
+    elseif _cmd.command == "discover" then
+        returned = {command="discresponse", server=modem.address}
     end
     modem.send(sender, 1, ser.serialize(returned))
 end)

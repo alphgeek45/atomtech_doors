@@ -30,10 +30,14 @@ end
 ------------------------------------------------------------------------------------------
 modem.open(1)
 
+modem.broadcast(1, ser.serialize({command="discover"}))
+
 event.listen('modem_message', function(e, _, sender, _, _, msg)
+
+    local _msg = ser.unserialize(msg)
     if sender == server_address then
         -- deconstruct the message
-        local _msg = ser.unserialize(msg)
+
         if _msg.command == "open" then
             redstone.setOutput(sides.west, 15)
             event.timer(5, function()
@@ -42,6 +46,9 @@ event.listen('modem_message', function(e, _, sender, _, _, msg)
         else
             GUI.alert("You do not have access to this door.")
         end
+    end
+    if _msg.command == "discresponse" then
+        server_address = _msg.server
     end
 end)
 
