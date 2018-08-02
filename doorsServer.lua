@@ -1,7 +1,7 @@
 local ser = require('serialization')
 local event = require('event')
 local GUI = require('GUI')
-local admin = "alphgeek45"
+local admins = {"alphgeek45"}
 local users = {}
 local modem = require('component').modem
 
@@ -14,11 +14,13 @@ local playerList = layout:setPosition(1, 1, layout:addChild(GUI.list(3, 2, 25, 2
 local addButton = layout:setPosition(3, 1, layout:addChild(GUI.button(1, 1, 26, 3, 0xEEEEEE, 0x000000, 0xAAAAAA, 0x0, "+Add")))
 local playerText = layout:setPosition(2, 1, layout:addChild(GUI.input(2, 2, 30, 3, 0xEEEEEE, 0x555555, 0x999999, 0xFFFFFF, 0x2D2D2D, "", "Placeholder text")))
 
-addButton.onTouch = function()
-    table.insert(users, playerText.text)
-    playerList:addItem(playerText.text)
-    playerText.text = ""
-    mainContainer:drawOnScreen(true)
+addButton.onTouch = function(mainContainer, button, e, _, _, _, _, player)
+    if table.contains(admins, player) then
+        table.insert(users, playerText.text)
+        playerList:addItem(playerText.text)
+        playerText.text = ""
+        mainContainer:drawOnScreen(true)
+    end
 end
 
 function table.contains(table, element)
@@ -43,6 +45,9 @@ event.listen('modem_message', function(_, _, sender, _, _, msg)
         end
     elseif _cmd.command == "discover" then
         returned = {command="discresponse", server=modem.address}
+    elseif _cmd.commend == "adduser" then
+        table.insert(users, _cmd.user)
+        returned = {command="addsuccess"}
     end
     modem.send(sender, 1, ser.serialize(returned))
 end)

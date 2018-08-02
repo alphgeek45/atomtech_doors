@@ -11,6 +11,7 @@ local event = require('event')
 local modem = require('component').modem
 local ser = require('serialization')
 local server_address = 'd3e6ffb5-3964-4097-a8b7-19631d3be954'
+local door_side = sides.east
 
 local isOpen = false
 ------------------------------------------------------------------------------------------
@@ -39,9 +40,9 @@ event.listen('modem_message', function(e, _, sender, _, _, msg)
         -- deconstruct the message
 
         if _msg.command == "open" then
-            redstone.setOutput(sides.west, 15)
+            redstone.setOutput(door_side, 15)
             event.timer(5, function()
-                redstone.setOutput(sides.west, 0)
+                redstone.setOutput(door_side, 0)
             end)
         else
             GUI.alert("You do not have access to this door.")
